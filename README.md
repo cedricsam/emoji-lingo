@@ -1,6 +1,6 @@
 # Emoji Lingo for Tidbyt
 
-This [Tidbyt](https://tidbyt.com/) app displays a random emoji and its unique short text annotation in a given language (only Canadian French for now).
+This [Tidbyt](https://tidbyt.com/) app displays a random emoji and its unique short text annotation in a given language (see `files/supported-locales.txt`).
 
 Its home at Tidbyt is here: [https://github.com/tidbyt/community/tree/main/apps/emojilingo](https://github.com/tidbyt/community/tree/main/apps/emojilingo)
 
@@ -8,20 +8,20 @@ Its home at Tidbyt is here: [https://github.com/tidbyt/community/tree/main/apps/
 
 ## Data Management Scripts
 
+_As of Unicode version 16.0 (in 2024 and after), the Unicode website no longer provides images from various vendors, including Apple and Google. So, moving forward, the `get-emoji-base64.js` script won't be used._
+
 Node.js scripts that extract emoji data from Unicode.org assets into a usable, trimmed format (to JSON). The Tidbyt script will use those to pick an emoji.
 
-`get-emoji-base64.js`: Extracts the base64 on every row of Unicode’s full emoji list HTML page, resizes it and stores it with its UTF-8 code(s) and a numeric ID from the page
+`get-emoji-base64.js` (legacy, only useful for 15.0 and before): Extracts the base64 on every row of Unicode’s full emoji list HTML page, resizes it and stores it with its UTF-8 code(s) and a numeric ID from the page
 
-`parse-cldr-annotations-xml.js`: Takes a localization of CLDR unique short name annotations XML (and a fallback, like fr for fr\_CA) and keys by code. Only takes unique (tts) annotations.
+`parse-cldr-annotations-xml.js`: Takes a localization of CLDR unique short name annotations XML (and a fallback, like fr for fr\_CA) and keys by code. Only takes unique (tts) annotations. You can loop through `files/supported-locales.txt` and generate all of the data files for locales you wish to support. The output goes to `files/locale`.
 
-### Download your own…
+## `unicode-org/cldr` submodule
 
-These scripts can be re-run with the latest release of Unicode. The `get-emoji-base64.js` script extracts the vendor-specific emojis from the HTML.
+The [CLDR Project](https://github.com/unicode-org/cldr) from Unicode provides the short labels for emojis. More specifically, we use the [annotations](https://github.com/unicode-org/cldr/tree/main/common/annotations) part of the project.
 
-To be forward-looking, and to catch as many vendor-released emojis, we would typically use the [beta version](https://unicode.org/emoji/charts-beta/full-emoji-list.html).
+* `cd files/cldr`
 
-This HTML file would be downloaded to `./files` for this repo (is `.gitignore`'ed because large and ever-changing).
+* `git submodule init` and then `git submodule update` (might take a while)
 
-(Example: Say we’re in 2022, the webpage of the full emoji list for the current release (end of 2021) may show the new (2021) emojis, but probably doesn’t show the vendor-specific base64 strings yet... So, you’d probably have to find them in the current beta, released in 2022. In turn, don’t expect the new 2022 emojis before the 2023 beta is released.)
-
-For annotations, one would use the `main` branch from [`unicode-org/cldr`](https://github.com/unicode-org/cldr/blob/main/common/annotations).
+* then pull the latest [release](https://github.com/unicode-org/cldr/releases) with something like `git pull origin release-47` (here's Unicode's [list of CLDR releases](https://cldr.unicode.org/index/downloads)).
