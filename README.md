@@ -14,6 +14,8 @@ Node.js scripts that extract emoji data from Unicode.org assets into a usable, t
 
 `get-emoji-base64-from-unicode-page.js` (legacy, only useful for 15.0 and before): Extracts the base64 on every row of Unicode’s full emoji list HTML page, resizes it and stores it with its UTF-8 code(s) and a numeric ID from the page
 
+(WIP) `get-emoji-list-and-base64-images.js` (new since 2025 and unicode version 16.0): Takes the list of emojis from Unicode’s full emoji list HTML page and match with a directory containing PNGs of emojis. Outputs list of emojis that can be used and transforms the PNGs to base64 equivalent for use on the Tidbyt app. The emojis can be extracted using [faveris/glyph_extractor](https://github.com/faveris/glyph_extractor) if you are on the most recent macos version, found on [iamcal/emoji-data](https://github.com/iamcal/emoji-data) or on [googlefonts/noto-emoji](https://github.com/googlefonts/noto-emoji).
+
 `parse-cldr-annotations-xml.js`: Takes a localization of CLDR unique short name annotations XML (and a fallback, like fr for fr\_CA) and keys by code. Only takes unique (tts) annotations. You can loop through `files/supported-locales.txt` and generate all of the data files for locales you wish to support. The output goes to `files/locale`.
 
 ## `unicode-org/cldr` submodule

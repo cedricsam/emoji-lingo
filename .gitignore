@@ -4,5 +4,9 @@ files/*
 !files/cldr
 !files/locale
 files/locale/*
+!files/locale/.gitkeep
+!files/base64
+files/base64/*
+!files/base64/.gitkeep
 !files/supported-locales.txt
 !files/emoji-data.txt
