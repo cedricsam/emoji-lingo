@@ -1,6 +1,6 @@
 import { existsSync, readFileSync, writeFileSync, mkdirSync } from 'fs';
 import sharp from 'sharp';
-import cheerio from 'cheerio';
+import * as cheerio from 'cheerio';
 import yargs from 'yargs';
 import { csvFormat } from 'd3-dsv';
 

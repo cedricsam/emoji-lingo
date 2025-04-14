@@ -1,5 +1,5 @@
 import { readFileSync, writeFileSync } from 'fs';
-import cheerio from 'cheerio';
+import * as cheerio from 'cheerio';
 import emojiUnicode from 'emoji-unicode';
 import yargs from 'yargs';
 import { csvFormat } from 'd3-dsv';

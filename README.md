@@ -12,7 +12,7 @@ _As of Unicode version 16.0 (in 2024 and after), the Unicode website no longer p
 
 Node.js scripts that extract emoji data from Unicode.org assets into a usable, trimmed format (to JSON). The Tidbyt script will use those to pick an emoji.
 
-`get-emoji-base64.js` (legacy, only useful for 15.0 and before): Extracts the base64 on every row of Unicode’s full emoji list HTML page, resizes it and stores it with its UTF-8 code(s) and a numeric ID from the page
+`get-emoji-base64-from-unicode-page.js` (legacy, only useful for 15.0 and before): Extracts the base64 on every row of Unicode’s full emoji list HTML page, resizes it and stores it with its UTF-8 code(s) and a numeric ID from the page
 
 `parse-cldr-annotations-xml.js`: Takes a localization of CLDR unique short name annotations XML (and a fallback, like fr for fr\_CA) and keys by code. Only takes unique (tts) annotations. You can loop through `files/supported-locales.txt` and generate all of the data files for locales you wish to support. The output goes to `files/locale`.
 

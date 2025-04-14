@@ -2,5 +2,7 @@ node_modules/
 *.webp
 files/*
 !files/cldr
+!files/locale
+files/locale/*
 !files/supported-locales.txt
 !files/emoji-data.txt
