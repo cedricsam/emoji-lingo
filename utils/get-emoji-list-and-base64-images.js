@@ -53,15 +53,23 @@ const promises = Array.from(rows).map((row) => {
   const no = $(row).find('td.rchars').text();
   const code = $(row).find('td.code').text();
   const codeTrimmed = code
-    .replace(/U\+FE0F\b/, '')
+    .replaceAll(/U\+200D\b/g, '')
+    .replaceAll(/U\+FE0F\b/g, '')
     .replace(/U\+/g, '')
-    .toLowerCase();
+    .toLowerCase()
+    .trim();
+  const codeArray = codeTrimmed.split(/\s+/);
   if (Number.isFinite(+no)) {
-    const imgPath = `${EMOJIS_PNG_INDIR}/0x${codeTrimmed}.png`; // matches the glyph_extractor file names (on Apple emoji glyphs)
+    // if more than one code, join the uppercased codes with underscores
+    const codeGlyphExtractor = `${codeArray[0]}${codeArray.length > 1 && `_${codeArray.slice(1).map((c) => `u${c.toUpperCase()}`).join('_')}` || ''}`;
+    const imgPath = `${EMOJIS_PNG_INDIR}/0x${codeGlyphExtractor}.png`; // matches the glyph_extractor file names (on Apple emoji glyphs)
     try {
       const imgData = readFileSync(imgPath);
       return sharpenImage(imgData, +no, codeTrimmed);
     } catch {
+      if (+no) {
+        console.log(`❌`, +no, code, codeTrimmed, codeArray, codeGlyphExtractor);
+      }
       return undefined;
     }
   }
