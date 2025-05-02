@@ -2,6 +2,7 @@ node_modules/
 *.webp
 files/*
 !files/cldr
+!files/google-noto-emoji
 !files/locale
 files/locale/*
 !files/locale/.gitkeep
@@ -10,3 +11,7 @@ files/base64/*
 !files/base64/.gitkeep
 !files/supported-locales.txt
 !files/emoji-data.txt
+!files/glyphs
+files/glyphs/*
+!files/glyphs/.gitkeep
+!files/glyphs/google

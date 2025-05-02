@@ -1,3 +1,9 @@
 [submodule "files/cldr"]
 	path = files/cldr
 	url = https://github.com/unicode-org/cldr.git
+[submodule "google-noto-emoji"]
+	path = files/google-noto-emoji
+	url = https://github.com/googlefonts/noto-emoji.git
+[submodule "files/google-noto-emoji"]
+	path = files/google-noto-emoji
+	url = https://github.com/googlefonts/noto-emoji.git
