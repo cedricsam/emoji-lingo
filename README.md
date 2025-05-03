@@ -4,7 +4,23 @@ This [Tidbyt](https://tidbyt.com/) app displays a random emoji and its unique sh
 
 Its home at Tidbyt is here: [https://github.com/tidbyt/community/tree/main/apps/emojilingo](https://github.com/tidbyt/community/tree/main/apps/emojilingo)
 
+_Tidbyt was acquired by Modal on [November 7, 2024](https://modal.com/blog/tidbyt-is-joining-modal), and you can no longer purchase their physical devices new. Your best bet (if you don't own a Tidbyt) is to use [Pixlet](https://github.com/tidbyt/pixlet) to build and see the output of this project's display code ([emoji_lingo.star](https://github.com/cedricsam/emoji-lingo/blob/main/emoji_lingo.star))._
+
 ![Banner Image](assets/banner.jpg)
+
+## What's New
+
+### 2025-05-02: 2.0
+
+As of May 2, 2025, the current list of emojis and base64 on my S3 bucket and used by this pixlet app are now Unicode 16.0. This coincides with the [recent release](https://blog.emojipedia.org/apple-ios-18-4-emoji-changelog/) of Apple's emojis newly included in Unicode 16.0, in macos 15.4 and iOS 18.4.
+
+Since this pixlet app was released in August 2022, the list of emojis has not been updated. The base64 emojis were originally extracted from Unicode 15.0's [full emoji list](https://unicode.org/emoji/charts-15.0/full-emoji-list.html), that embeds examples from multiple vendors. That page did not include 15.0 emojis embeds, so the app had in fact been only displaying emojis up to version 14.0 (released in fall 2021, but appeared on iOS only since spring 2022).
+
+Moreover, that Unicode [page](https://unicode.org/emoji/charts/full-emoji-list.html) no longer embeds those emojis, so the base64 were rebuilt using a new script, described in the section below. The list of emojis itself (along with the number used as identifier) still builds from that page.
+
+Emoji names are from CLDR's [release 47](https://github.com/unicode-org/cldr/releases/tag/release-47) of March 12, 2025. [emoji-data.txt](https://www.unicode.org/Public/16.0.0/ucd/emoji/emoji-data.txt) is used to select what range of unicode characters to read annotations for.
+
+There were no changes to the display code except for a few more inline comments.
 
 ## Data Management Scripts
 
