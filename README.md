@@ -22,6 +22,8 @@ Emoji names are from CLDR's [release 47](https://github.com/unicode-org/cldr/rel
 
 There were no changes to the display code except for a few more inline comments.
 
+Support was added for Microsoft emojis.
+
 ## Data Management Scripts
 
 _As of Unicode version 16.0 (in 2024 and after), the Unicode website no longer provides images from various vendors, including Apple and Google. So, moving forward, the `get-emoji-base64.js` script won't be used._
