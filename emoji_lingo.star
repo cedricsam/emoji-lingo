@@ -5,19 +5,19 @@ Description: Displays a random emoji and its unique short text annotation from t
 Author: Cedric Sam
 """
 
-load("schema.star", "schema")
-load("re.star", "re")
+load("cache.star", "cache")
+load("compress/gzip.star", "gzip")
+load("encoding/base64.star", "base64")
+load("encoding/csv.star", "csv")
 load("http.star", "http")
 load("random.star", "random")
+load("re.star", "re")
 load("render.star", "render")
-load("compress/gzip.star", "gzip")
-load("encoding/csv.star", "csv")
-load("encoding/base64.star", "base64")
-load("cache.star", "cache")
+load("schema.star", "schema")
 
 # can be useful to change during testing
 default_locale = "en"
-default_vendor = "microsoft"
+default_vendor = "apple" # apple, google or microsoft (added in May 2025)
 
 # for testing, can be set to a number matching the number in Unicode release
 # currently used (see that release's full emoji list)
@@ -31,15 +31,10 @@ EMOJI_LIST_URL = "https://emoji-lingo.s3.amazonaws.com/emoji-list-%s.csv"
 EMOJI_NAMES_URL = "https://emoji-lingo.s3.amazonaws.com/locale/%s.csv"
 EMOJI_BASE64_URL = "https://emoji-lingo.s3.amazonaws.com/base64/%s/%s.txt"
 
-def findCodeInList(code, emojiList):
-    for item in emojiList:
-        if item["code"] == code:
-            return item
-
 def normalizeCode(code):
     return re.sub(r" +", "-", code)
 
-def getEmojiList(locale, vendor):
+def getEmojiList(vendor):
     emoji_base64_list_cache = cache.get("emoji_base64_list")
     if emoji_base64_list_cache != None:
         print("Using cache for emoji base64")
@@ -88,6 +83,7 @@ def main(config):
     # very unlikely it won’t find anything per ones picked)
     random_emoji_cache_name = "random_emoji-%s" % vendor
     random_emoji_csv_data_cached = cache.get(random_emoji_cache_name)
+    random_emoji_base64 = None
     name_item = None
     if random_emoji_csv_data_cached != None:
         print("Cache for random emoji is valid...")
@@ -105,7 +101,7 @@ def main(config):
     # name_item not set, because not found on cache
     if name_item == None:
         # get emoji lists (emoji base64 and the names per locale)
-        emoji_list = getEmojiList(locale, vendor)
+        emoji_list = getEmojiList(vendor)
         emoji_names = getEmojiNames(locale)
         valid_emoji_base64_list = list()
         for code in emoji_list:
