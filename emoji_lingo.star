@@ -17,7 +17,7 @@ load("schema.star", "schema")
 
 # can be useful to change during testing
 default_locale = "en"
-default_vendor = "apple" # apple, google or microsoft (added in May 2025)
+default_vendor = "apple"  # apple, google or microsoft (added in May 2025)
 
 # for testing, can be set to a number matching the number in Unicode release
 # currently used (see that release's full emoji list)
@@ -48,6 +48,8 @@ def getEmojiList(vendor):
         fail("couldn't get list of emojis with status %d" % rep.status_code)
     rep_body_raw = rep.body()
     rep_body = str(gzip.decompress(rep_body_raw))  # the emoji list emoji is gzipped, despite url
+
+    # TODO: Determine if this cache call can be converted to the new HTTP cache.
     cache.set("emoji_base64_list", rep_body, ttl_seconds = 86400)  # caching 24 hours
     return csv.read_all(rep_body, skip = 1)
 
@@ -64,6 +66,8 @@ def getEmojiNames(locale):
         fail("couldn't get list of emoji names with status %d" % rep_names.status_code)
     rep_names_body_raw = rep_names.body()
     rep_names_body = str(gzip.decompress(rep_names_body_raw))  # the names csv is gzipped, despite url
+
+    # TODO: Determine if this cache call can be converted to the new HTTP cache.
     cache.set("emoji_names_%s" % locale, rep_names_body, ttl_seconds = 86400)  # caching 24 hours
     return csv.read_all(rep_names_body, skip = 1)
 
@@ -76,6 +80,8 @@ def main(config):
         vendor = default_vendor
     print("Vendor: %s" % vendor)
 
+    random_emoji_base64 = None
+
     # Try to find data from cache...
     # Also caching by vendor, since base64 would be different...
     # An emoji caches by its base64 in a given language, but it
@@ -83,7 +89,6 @@ def main(config):
     # very unlikely it won’t find anything per ones picked)
     random_emoji_cache_name = "random_emoji-%s" % vendor
     random_emoji_csv_data_cached = cache.get(random_emoji_cache_name)
-    random_emoji_base64 = None
     name_item = None
     if random_emoji_csv_data_cached != None:
         print("Cache for random emoji is valid...")
@@ -141,6 +146,8 @@ def main(config):
         if rep_base64.status_code != 200:
             fail("couldn't get emoji text file with status %d" % rep_base64.status_code)
         random_emoji_base64 = rep_base64.body()
+
+        # TODO: Determine if this cache call can be converted to the new HTTP cache.
         cache.set(
             "random_emoji-%s" % vendor,
             "%s,%s" % (name_item[0], random_emoji_base64),  # as a one-line CSV...
