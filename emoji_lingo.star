@@ -16,8 +16,8 @@ load("encoding/base64.star", "base64")
 load("cache.star", "cache")
 
 # can be useful to change during testing
-default_locale = "fr_CA"
-default_vendor = "apple"
+default_locale = "en"
+default_vendor = "microsoft"
 
 # for testing, can be set to a number matching the number in Unicode release
 # currently used (see that release's full emoji list)
@@ -369,6 +369,10 @@ def get_schema():
                     schema.Option(
                         display = "Google",
                         value = "google",
+                    ),
+                    schema.Option(
+                        display = "Microsoft",
+                        value = "microsoft",
                     ),
                 ],
             ),

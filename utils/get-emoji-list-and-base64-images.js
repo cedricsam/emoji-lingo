@@ -59,6 +59,11 @@ const promises = Array.from(rows).map((row) => {
   const no = $(row).find('td.rchars').text();
   const name = $(row).find('td.name').text();
   const code = $(row).find('td.code').text();
+  const codeTrimmedWithVariationSelector = code // Keep the variation selectors, as they are needed in the MS emoji names
+    .replace(/U\+/g, '')
+    .toLowerCase()
+    .trim();
+  const codeArrayAllIncludingVariationSelector = codeTrimmedWithVariationSelector.split(/\s+/).map((d) => d.replace(/^0+/, '')); // Trim 0s before unicode bytes because that's our input from previous script
   const codeTrimmed = code // Keep the joiners, as they will be present in emoji codes used for joining with the CLDR data
     .replaceAll(/U\+FE0F\b/g, '')
     .replace(/U\+/g, '')
@@ -66,7 +71,18 @@ const promises = Array.from(rows).map((row) => {
     .trim();
   const codeArrayAll = codeTrimmed.split(/\s+/);
   if (Number.isFinite(+no) && +no) {
-    if (vendor === `google`) { // For Google, using https://github.com/googlefonts/noto-emoji
+    if (vendor === `microsoft`) { // Comes from this script https://github.com/cedricsam/glyph_extractor/blob/main/ms-emoji-extractor.py
+      // File name are simply "-" separated (we control the format and list of emojis to be extracted in above script)
+      const imgPath = `${EMOJIS_PNG_INDIR}/${codeArrayAllIncludingVariationSelector.join("-")}.png`; // matches the glyph_extractor file names (on Apple emoji glyphs)
+      try {
+        const imgData = readFileSync(imgPath);
+        if (verbose >= 3) console.log(`✅`, +no, code, codeTrimmed, codeArrayAllIncludingVariationSelector, imgPath, name);
+        return sharpenImage(imgData, +no, codeTrimmed);
+      } catch {
+        if (verbose >= 1) console.log(`❌`, +no, code, codeTrimmed, codeArrayAllIncludingVariationSelector, name);
+        return undefined;
+      }
+    } else if (vendor === `google`) { // For Google, using https://github.com/googlefonts/noto-emoji
       // File name starts with "emoji_u", then the "_" underscore separated codes, including joiners
       const imgPath = `${EMOJIS_PNG_INDIR}/emoji_u${codeArrayAll.join("_")}.png`; // matches the glyph_extractor file names (on Apple emoji glyphs)
       try {
